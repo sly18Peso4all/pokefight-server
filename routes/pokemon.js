@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
   const pokemonID = req.params.id;
-  const singlePokemon = jsonData.filter(item => parseInt(item.id) === parseInt(pokemonID));
+  const singlePokemon = jsonData.find(item => parseInt(item.id) === parseInt(pokemonID));
   
   res.send(singlePokemon);
 });
