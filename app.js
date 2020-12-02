@@ -18,10 +18,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // CORS Sharing across all files.
-app.use(cors({
-  origin: ["https://localhost:4000/"],     
-  methods: ["GET", "POST"],
-}))
+//app.use(cors({
+//  origin: ["https://localhost:4000/"],     
+//  methods: ["GET", "POST"],
+//}));
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
