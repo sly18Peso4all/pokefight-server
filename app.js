@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
+var cors = require('cors');
+const { PORT = 4000 } = process.env;
+
 var pokemonRouter = require('./routes/pokemon');
 var usersRouter = require('./routes/users');
 
@@ -13,6 +16,12 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+// CORS Sharing across all files.
+app.use(cors({
+  origin: ["https://localhost:4000/"],     
+  methods: ["GET", "POST"],
+}))
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -39,8 +48,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000, () => {
-  console.log("hey")
+app.listen(PORT, () => {
+  console.log(`Server sucessfully runing on Port ${PORT}`)
 })
 
 module.exports = app;
