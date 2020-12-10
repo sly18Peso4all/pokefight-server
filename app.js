@@ -1,36 +1,48 @@
-var express = require('express');
-var logger = require('morgan');
-
-
-var cors = require('cors');
-const { PORT = 4000 } = process.env;
-
-var pokemonRouter = require('./routes/pokemon');
+const express = require("express");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+//const { Game } = require("./models/game");
+const {connectDB} = require("./models")
+const cors = require("cors");
+const pokemonRouter = require("./routes/pokemon");
+const gameRouter = require("./routes/game");
 
 var app = express();
-
 app.use(cors());
+app.use(express.json());
+const { PORT = 4000 } = process.env;
+app.use(logger("dev"));
 
-app.use(logger('dev'));
+//connect to DB
+//mongoose.connect(process.env.DB_Connect, { useNewUrlParser: true }, () =>
+//  console.log("connected to db")
+//)//;
 
-app.use('/pokemon', pokemonRouter);
-
+app.use("/pokemon", pokemonRouter);
+app.use("/game", gameRouter);
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server sucessfully runing on Port ${PORT}`)
-})
+(
+async function () {
+  await connectDB();
+  app.listen(PORT, () =>
+    console.log("Server listening in http://localhost:" + PORT)
+  );
+}
+)();
 
-module.exports = app;
-
+//app.listen(PORT, () => {
+//  console.log(`Server sucessfully runing on Port ${PORT}`);
+//});
 
